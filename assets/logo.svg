@@ -1,0 +1,48 @@
+<svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .frame { fill:none; stroke:#0b1414; stroke-width:14; stroke-linecap:round; stroke-linejoin:round; }
+      .wire  { fill:none; stroke:#3ccbc0; stroke-width:8; stroke-linecap:round; stroke-linejoin:round; }
+      .wire-alt { fill:none; stroke:#e0a53e; stroke-width:8; stroke-linecap:round; }
+      .node-ring { fill:#0b1414; stroke:#3ccbc0; stroke-width:7; }
+      .node-ring-alt { fill:#0b1414; stroke:#e0a53e; stroke-width:7; }
+      .node-dot { fill:#3ccbc0; }
+      .node-dot-alt { fill:#e0a53e; }
+      .hub-ring { fill:#0b1414; stroke:#3ccbc0; stroke-width:8; }
+    </style>
+  </defs>
+
+  <!-- outer wireframe (dark base) -->
+  <path class="frame" d="M120 42 L120 128 M55 150 L120 128 M195 132 L120 128 M78 214 L120 128 M168 214 L120 128"/>
+
+  <!-- colored wires on top -->
+  <path class="wire" d="M120 42 L120 128"/>
+  <path class="wire" d="M55 150 L120 128"/>
+  <path class="wire-alt" d="M195 132 L120 128"/>
+  <path class="wire" d="M78 214 L120 128"/>
+  <path class="wire" d="M168 214 L120 128"/>
+
+  <!-- outer nodes -->
+  <circle class="node-ring" cx="120" cy="40" r="24"/>
+  <circle class="node-dot" cx="120" cy="40" r="10"/>
+
+  <circle class="node-ring" cx="50" cy="152" r="17"/>
+  <circle class="node-dot" cx="50" cy="152" r="7"/>
+
+  <circle class="node-ring-alt" cx="199" cy="132" r="20"/>
+  <circle class="node-dot-alt" cx="199" cy="132" r="8"/>
+
+  <circle class="node-ring" cx="75" cy="217" r="21"/>
+  <circle class="node-dot" cx="75" cy="217" r="9"/>
+
+  <circle class="node-ring" cx="167" cy="217" r="21"/>
+  <circle class="node-dot" cx="167" cy="217" r="9"/>
+
+  <!-- central hub -->
+  <circle class="hub-ring" cx="120" cy="128" r="42"/>
+  <circle cx="120" cy="128" r="35" fill="#0b1414"/>
+
+  <!-- terminal glyph -->
+  <path d="M104 112 L120 128 L104 144" fill="none" stroke="#3ccbc0" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  <line x1="126" y1="144" x2="146" y2="144" stroke="#e0a53e" stroke-width="7" stroke-linecap="round"/>
+</svg>
