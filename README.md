@@ -40,6 +40,8 @@ Como parte del lab tocaba comprobar que el trafico de la pagina de verdad viaja 
 
 ### Lo que se vio filtrado por el puerto 8000
 
+![Captura de Wireshark filtrando tcp.port == 8000](evidence/blue/wireshark-filtro-puerto-8000.png)
+
 | # paquete | Protocolo | Info |
 |---|---|---|
 | 1849 | HTTP | `GET / HTTP/1.1` |

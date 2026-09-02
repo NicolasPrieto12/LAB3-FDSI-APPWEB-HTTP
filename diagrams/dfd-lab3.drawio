@@ -1,0 +1,83 @@
+<mxfile host="app.diagrams.net" agent="claude-code" version="24.7.5">
+  <diagram name="DFD Lab 3 - HTTP publico" id="dfd-lab3">
+    <mxGraphModel dx="1200" dy="700" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="560" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <mxCell id="titulo" value="DFD ligero - Laboratorio 3 (HTTP publico sin autenticacion)" style="text;html=1;fontSize=16;fontStyle=1;align=left;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="40" y="10" width="600" height="26" as="geometry" />
+        </mxCell>
+
+        <!-- Entidad externa: Usuario/Kali -->
+        <mxCell id="entKali" value="USUARIO / KALI&#10;(Red Team)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="40" y="230" width="170" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Limite de confianza 1 -->
+        <mxCell id="boundA" style="endArrow=none;dashed=1;strokeColor=#B85450;strokeWidth=2;html=1;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="280" y="60" as="sourcePoint" />
+            <mxPoint x="280" y="480" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="boundALabel" value="LIMITE DE CONFIANZA 1&#10;entrada al servidor (red -&gt; host)" style="text;html=1;fontSize=11;fontColor=#B85450;fontStyle=1;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="180" y="30" width="200" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- Proceso: Nginx -->
+        <mxCell id="pNginx" value="1.0&#10;NGINX&#10;servidor HTTP :80 (Ubuntu Server)" style="rounded=1;arcSize=30;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="340" y="220" width="220" height="100" as="geometry" />
+        </mxCell>
+
+        <!-- Limite de confianza 2 -->
+        <mxCell id="boundB" style="endArrow=none;dashed=1;strokeColor=#B85450;strokeWidth=2;html=1;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="640" y="60" as="sourcePoint" />
+            <mxPoint x="640" y="480" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="boundBLabel" value="LIMITE DE CONFIANZA 2&#10;red -&gt; aplicacion (nginx -&gt; archivos)" style="text;html=1;fontSize=11;fontColor=#B85450;fontStyle=1;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="540" y="30" width="220" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- Almacen de datos: archivos del sitio -->
+        <mxCell id="dArchivos" value="D1   Archivos del sitio&#10;(index.html, public-inventory.txt)" style="shape=partialRectangle;whiteSpace=wrap;html=1;top=1;bottom=1;right=0;left=0;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;align=center;" vertex="1" parent="1">
+          <mxGeometry x="700" y="240" width="280" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Entidad secundaria: Blue Team (monitoreo) -->
+        <mxCell id="entBlue" value="BLUE TEAM&#10;monitoreo: tcpdump / access.log / error.log" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="340" y="400" width="220" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- Flujos principales -->
+        <mxCell id="f1" value="HTTP :80&#10;(curl, nmap -sV, navegador)" style="html=1;fontSize=11;endArrow=block;html=1;" edge="1" parent="1" source="entKali" target="pNginx">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="230" y="255" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="f2" value="200 OK / 404&#10;+ headers de respuesta" style="html=1;fontSize=11;endArrow=block;html=1;" edge="1" parent="1" source="pNginx" target="entKali">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points"><mxPoint x="270" y="330" /></Array>
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="f3" value="lee archivo&#10;solicitado" style="html=1;fontSize=11;endArrow=block;html=1;" edge="1" parent="1" source="pNginx" target="dArchivos">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f4" value="contenido estatico&#10;(html / txt)" style="html=1;fontSize=11;endArrow=block;html=1;" edge="1" parent="1" source="dArchivos" target="pNginx">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points"><mxPoint x="630" y="330" /></Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Flujo de monitoreo -->
+        <mxCell id="f5" value="observa trafico / logs" style="html=1;fontSize=11;endArrow=block;dashed=1;strokeColor=#b85450;fontColor=#b85450;html=1;" edge="1" parent="1" source="pNginx" target="entBlue">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
