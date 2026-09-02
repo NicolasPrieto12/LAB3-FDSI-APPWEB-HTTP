@@ -23,6 +23,14 @@ Se abre directo en el navegador, no necesita servidor.
 
 Lo que sigue es implementar esos endpoints de verdad.
 
+## DFD (diagrama de flujo de datos)
+
+Flujo minimo del laboratorio: `Usuario/Kali -> red del laboratorio -> Nginx -> archivos del sitio`, con los 2 limites de confianza que pide la guia marcados en rojo (entrada al servidor, y el paso de red a aplicacion). Tambien se ve donde entra Blue Team a monitorear (tcpdump / logs), sin que forme parte del flujo principal.
+
+![DFD ligero del laboratorio 3](diagrams/dfd-lab3.png)
+
+Fuente editable en [`diagrams/dfd-lab3.drawio`](diagrams/dfd-lab3.drawio) (abrir en [app.diagrams.net](https://app.diagrams.net)).
+
 ## Captura de trafico HTTP (Wireshark)
 
 Como parte del lab tocaba comprobar que el trafico de la pagina de verdad viaja como HTTP plano. Para eso:
