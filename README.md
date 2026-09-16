@@ -31,6 +31,39 @@ Flujo minimo del laboratorio: `Usuario/Kali -> red del laboratorio -> Nginx -> a
 
 Fuente editable en [`diagrams/dfd-lab3.drawio`](diagrams/dfd-lab3.drawio) (abrir en [app.diagrams.net](https://app.diagrams.net)).
 
+## Hipotesis STRIDE (Fase B)
+
+Adaptadas al spec de la API ya documentado en [`network-automation-hub/index.html`](network-automation-hub/index.html) (inventario de dispositivos, scripts aprobados, ejecucion controlada). La columna de validacion queda pendiente hasta tener la instancia Ubuntu + Nginx desplegada:
+
+| ID | STRIDE | Hipotesis tecnica | Validacion |
+|----|--------|--------------------|------------|
+| H1 | Information Disclosure | `GET /devices` expone el inventario completo (sede, rol, estado) sin autenticacion real — el header `Authorization` del spec es solo documental, nadie lo valida. | Pendiente — `curl` sin token contra `$TARGET_URL` y revisar respuesta. |
+| H2 | Information Disclosure | `GET /executions/{id}/evidence` devuelve quien ejecuto que, sobre que dispositivo y la salida capturada; sin control de acceso por operador, alcanzaria con enumerar el `id`. | Pendiente — enumeracion de IDs con curl/ZAP en modo pasivo. |
+| H3 | Spoofing | Nada valida el `Authorization: Bearer <token>` ni el campo `requestedBy`; cualquiera podria suplantar a `operador.autorizado` al pedir una ejecucion (`SIM /executions`). | Pendiente — inspeccionar si el request se acepta sin token valido. |
+| H4 | Repudiation | Como no hay verificacion real de identidad, un operador podria negar haber pedido una ejecucion o un rollback: no hay prueba de origen, solo el dato que el propio cliente declaro. | Pendiente — comparar `access.log` contra las hipotesis de origen declarado. |
+| H5 | Tampering | Sin TLS (HTTP plano), un intermediario en la red podria alterar `deviceId`/`scriptId`/`dryRun` en transito en el `POST /executions`, sin que el operador se entere. | Pendiente — demostrar ausencia de proteccion sin interceptar terceros. |
+
+## Variables del laboratorio
+
+Se acuerdan antes de empezar la ronda Red/Blue, una vez el docente asigne IP y CIDR:
+
+```bash
+export TARGET_IP=IP_ASIGNADA
+export TARGET_URL=http://$TARGET_IP
+export LAB_CIDR=CIDR_AUTORIZADO
+```
+
+## Linea de tiempo Purple Team (Paso 14)
+
+Se llena durante la ronda conjunta Red Team / Blue Team:
+
+| Hora UTC | Accion Red Team | Evidencia Blue Team | Conclusion |
+|----------|-------------------|----------------------|------------|
+| Completar | Nmap port 80 | Completar | Completar |
+| Completar | GET / | Completar | Completar |
+| Completar | GET archivo publico | Completar | Completar |
+| Completar | Ruta inexistente | Completar | Completar |
+
 ## Captura de trafico HTTP (Wireshark)
 
 Como parte del lab tocaba comprobar que el trafico de la pagina de verdad viaja como HTTP plano. Para eso:
