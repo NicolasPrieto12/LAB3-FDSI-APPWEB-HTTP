@@ -1,0 +1,460 @@
+HTTP/1.1 200 OK
+Server: nginx/1.28.3 (Ubuntu)
+Date: Wed, 23 Sep 2026 03:07:06 GMT
+Content-Type: text/html
+Content-Length: 13647
+Last-Modified: Wed, 16 Sep 2026 23:04:57 GMT
+Connection: keep-alive
+ETag: "6aab2099-354f"
+Accept-Ranges: bytes
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Network Automation Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#0c0e0e;
+    --panel:#111414;
+    --panel-2:#161a1a;
+    --line:#282e2e;
+    --line-bright:#3d4444;
+    --teal:#3ccbc0;
+    --teal-dim:#132926;
+    --gold:#e0a53e;
+    --gold-dim:#2e2311;
+    --coral:#e2685a;
+    --coral-dim:#331c17;
+    --text:#e6ebea;
+    --text-dim:#8d9997;
+    --text-faint:#565f5e;
+    --mono:"JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --display:"Chakra Petch", "IBM Plex Sans", sans-serif;
+    --body-font:"IBM Plex Sans", -apple-system, Helvetica, Arial, sans-serif;
+  }
+
+  *{ box-sizing:border-box; }
+
+  body{
+    margin:0;
+    background:var(--void);
+    color:var(--text);
+    font-family:var(--body-font);
+    font-size:16px;
+    line-height:1.5;
+  }
+
+  a{ color:inherit; }
+  code{ font-family:var(--mono); }
+
+  ::selection{ background:var(--teal); color:#04201c; }
+
+  /* ---------- status bar ---------- */
+  .statusbar{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    background:#08090a;
+    border-bottom:1px solid var(--line);
+    padding:6px 20px;
+    font-family:var(--mono);
+    font-size:11px;
+    color:var(--text-faint);
+    letter-spacing:.5px;
+  }
+  .dot{
+    width:7px; height:7px; border-radius:50%;
+    background:var(--teal);
+    box-shadow:0 0 5px var(--teal);
+    animation:blink 1.6s steps(2,jump-none) infinite;
+    flex:0 0 auto;
+  }
+  @keyframes blink{ 50%{ opacity:.25; } }
+  .statusbar .sep{ color:var(--line-bright); }
+  .statusbar .hi{ color:var(--coral); }
+
+  /* ---------- header ---------- */
+  header.hero{
+    padding:34px 40px 30px;
+    border-bottom:1px solid var(--line);
+  }
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--teal);
+    letter-spacing:2.5px;
+    text-transform:uppercase;
+    margin:0 0 12px;
+  }
+  h1.title{
+    font-family:var(--display);
+    font-weight:700;
+    font-size:38px;
+    letter-spacing:.5px;
+    margin:0;
+    color:var(--text);
+    border-left:3px solid var(--teal);
+    padding-left:16px;
+  }
+  header.hero p{
+    font-family:var(--body-font);
+    font-size:15.5px;
+    color:var(--text-dim);
+    max-width:620px;
+    line-height:1.7;
+    margin:16px 0 0 19px;
+  }
+
+  /* ---------- layout ---------- */
+  .layout{ display:flex; }
+
+  nav{
+    width:250px;
+    flex:0 0 250px;
+    background:var(--panel);
+    border-right:1px solid var(--line);
+    padding:22px 0 60px;
+    min-height:100vh;
+  }
+  nav h3{
+    font-family:var(--mono);
+    color:var(--text-faint);
+    font-size:11px;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+    padding:18px 22px 8px;
+    margin:0;
+  }
+  nav h3::before{ content:"// "; color:var(--line-bright); }
+  nav a{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    text-decoration:none;
+    font-family:var(--mono);
+    color:var(--text-dim);
+    font-size:13.5px;
+    line-height:1.4;
+    padding:8px 22px;
+    border-left:2px solid transparent;
+  }
+  nav a::before{
+    content:">";
+    color:var(--text-faint);
+    font-weight:700;
+  }
+  nav a:hover{
+    color:var(--text);
+    background:var(--panel-2);
+    border-left-color:var(--line-bright);
+  }
+
+  main{
+    flex:1;
+    min-width:0;
+    padding:38px 44px 100px;
+    max-width:840px;
+  }
+
+  section{
+    position:relative;
+    padding:0 0 34px 20px;
+    margin-bottom:34px;
+    border-left:1px solid var(--line);
+  }
+  section::before{
+    content:"";
+    position:absolute;
+    left:-4px; top:4px;
+    width:7px; height:7px;
+    background:var(--void);
+    border:1px solid var(--teal);
+    transform:rotate(45deg);
+  }
+
+  h2{
+    font-family:var(--display);
+    font-size:20px;
+    font-weight:600;
+    letter-spacing:.2px;
+    margin:0 0 14px;
+    color:var(--text);
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  h2 code{
+    font-family:var(--mono);
+    font-weight:600;
+    font-size:18px;
+    color:var(--text);
+    background:none;
+  }
+  section p{
+    font-family:var(--body-font);
+    font-size:15px;
+    line-height:1.75;
+    color:var(--text-dim);
+    max-width:620px;
+    margin:0 0 14px;
+  }
+  section p strong{ color:var(--text); font-weight:600; }
+  section p code, table code{
+    font-family:var(--mono);
+    background:var(--panel-2);
+    border:1px solid var(--line);
+    color:var(--teal);
+    padding:1px 6px;
+    border-radius:3px;
+    font-size:13.5px;
+  }
+
+  .method{
+    display:inline-flex;
+    align-items:center;
+    font-family:var(--mono);
+    font-size:10.5px;
+    font-weight:700;
+    letter-spacing:1px;
+    padding:3px 9px;
+    border-radius:3px;
+    border:1px solid;
+  }
+  .get{  color:var(--teal);  background:var(--teal-dim);  border-color:var(--teal); }
+  .post{ color:var(--gold);  background:var(--gold-dim);  border-color:var(--gold); }
+  .sim{  color:var(--coral); background:var(--coral-dim); border-color:var(--coral); }
+
+  table{
+    width:100%;
+    border-collapse:collapse;
+    font-family:var(--body-font);
+    font-size:14.5px;
+    margin:8px 0 18px;
+  }
+  th{
+    text-align:left;
+    font-family:var(--mono);
+    color:var(--teal);
+    font-weight:600;
+    font-size:11px;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    padding:9px 10px;
+    border-bottom:1px solid var(--line-bright);
+  }
+  td{
+    padding:10px 10px;
+    border-bottom:1px solid var(--line);
+    color:var(--text-dim);
+    vertical-align:top;
+  }
+
+  pre{
+    background:#08090a;
+    border:1px solid var(--line-bright);
+    border-left:3px solid var(--teal);
+    padding:16px;
+    font-family:var(--mono);
+    font-size:13.5px;
+    line-height:1.7;
+    color:#bfeae4;
+    overflow-x:auto;
+    border-radius:4px;
+  }
+
+  footer{
+    padding:20px 44px 40px;
+    font-family:var(--mono);
+    font-size:11px;
+    color:var(--text-faint);
+    border-top:1px solid var(--line);
+    letter-spacing:.4px;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .dot{ animation:none; }
+  }
+
+  @media (max-width:760px){
+    .layout{ flex-direction:column; }
+    nav{ width:100%; flex:none; min-height:auto; }
+    main{ padding:28px 20px 60px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="statusbar">
+  <span class="dot"></span>
+  <span>SESSION::OPERADOR.AUTORIZADO</span>
+  <span class="sep">|</span>
+  <span class="hi">MODE: SIMULATION</span>
+  <span class="sep">|</span>
+  <span>LAB-03 // READ-ONLY</span>
+</div>
+
+<header class="hero">
+  <p class="eyebrow">// Documentacion tecnica</p>
+  <h1 class="title">NETWORK AUTOMATION HUB</h1>
+  <p>
+    Consulta de un inventario ficticio de dispositivos de red y ejecucion controlada de scripts
+    aprobados sobre firewalls, routers y switches. Todo cambio queda validado, limitado y auditado
+    antes de tocar un equipo.
+  </p>
+</header>
+
+<div class="layout">
+
+  <nav>
+    <h3>Introduccion</h3>
+    <a href="#overview">Vision general</a>
+    <a href="#auth">Autenticacion</a>
+
+    <h3>Inventario</h3>
+    <a href="#list-devices"><span class="method get">GET</span>Listar dispositivos</a>
+    <a href="#get-device"><span class="method get">GET</span>Detalle de dispositivo</a>
+
+    <h3>Scripts aprobados</h3>
+    <a href="#list-scripts"><span class="method get">GET</span>Listar scripts</a>
+    <a href="#validate-script"><span class="method post">POST</span>Validar script</a>
+
+    <h3>Ejecucion controlada</h3>
+    <a href="#create-execution"><span class="method sim">SIM</span>Solicitar ejecucion</a>
+    <a href="#get-execution"><span class="method get">GET</span>Estado de ejecucion</a>
+    <a href="#rollback"><span class="method sim">SIM</span>Rollback</a>
+    <a href="#evidence"><span class="method get">GET</span>Evidencia y auditoria</a>
+  </nav>
+
+  <main>
+
+    <section id="overview">
+      <h2>VISION GENERAL</h2>
+      <p>
+        Prototipo para consultar un inventario ficticio de dispositivos de red (firewalls, routers,
+        switches) y preparar la ejecucion controlada de scripts previamente aprobados. El objetivo es
+        reducir errores de configuracion manual, estandarizar los cambios y dejar evidencia de quien
+        ejecuto cada accion y que resultado tuvo.
+      </p>
+    </section>
+
+    <section id="auth">
+      <h2>AUTENTICACION</h2>
+      <p>
+        Cada solicitud simulada incluye un encabezado <code>Authorization</code> con un token de
+        operador autorizado. Este prototipo no cifra ni transmite credenciales reales, es solo para
+        mostrar el flujo.
+      </p>
+      <table>
+        <tr><th>Header</th><th>Descripcion</th></tr>
+        <tr><td><code>Authorization</code></td><td>Bearer &lt;token-operador-autorizado&gt;</td></tr>
+        <tr><td><code>X-Request-Id</code></td><td>Identificador de correlacion para la evidencia</td></tr>
+      </table>
+    </section>
+
+    <section id="list-devices">
+      <h2><span class="method get">GET</span><code>/devices</code></h2>
+      <p>Devuelve el inventario ficticio de dispositivos de red disponibles para consulta.</p>
+      <table>
+        <tr><th>Parametro</th><th>Tipo</th><th>Descripcion</th></tr>
+        <tr><td><code>site</code> (opcional)</td><td>string</td><td>Filtra por sede, ej. <code>bogota-dc1</code></td></tr>
+        <tr><td><code>role</code> (opcional)</td><td>string</td><td>firewall / router / switch</td></tr>
+        <tr><td><code>status</code> (opcional)</td><td>string</td><td>online / offline / maintenance</td></tr>
+      </table>
+      <pre>curl -H "Authorization: Bearer &lt;token&gt;" \
+  https://na-hub.local/api/v1/devices?role=firewall</pre>
+    </section>
+
+    <section id="get-device">
+      <h2><span class="method get">GET</span><code>/devices/{id}</code></h2>
+      <p>Devuelve el detalle de un dispositivo: metadatos, version de firmware y estado de conectividad simulado.</p>
+      <table>
+        <tr><th>Parametro</th><th>Tipo</th><th>Descripcion</th></tr>
+        <tr><td><code>id</code> (requerido)</td><td>string</td><td>Identificador unico del dispositivo</td></tr>
+      </table>
+    </section>
+
+    <section id="list-scripts">
+      <h2><span class="method get">GET</span><code>/scripts</code></h2>
+      <p>Lista los scripts o playbooks aprobados para ejecucion controlada, con su nivel de riesgo y dispositivos compatibles.</p>
+    </section>
+
+    <section id="validate-script">
+      <h2><span class="method post">POST</span><code>/scripts/{id}/validate</code></h2>
+      <p>
+        Valida que un script aprobado sea compatible con el dispositivo seleccionado (rol, firmware,
+        limites de operacion) antes de solicitar su ejecucion. No modifica ningun equipo.
+      </p>
+      <table>
+        <tr><th>Campo</th><th>Tipo</th><th>Descripcion</th></tr>
+        <tr><td><code>deviceId</code> (requerido)</td><td>string</td><td>Dispositivo sobre el cual se validara el script</td></tr>
+      </table>
+    </section>
+
+    <section id="create-execution">
+      <h2><span class="method sim">SIM</span><code>/executions</code></h2>
+      <p>
+        Solicita la ejecucion controlada de un script aprobado sobre un dispositivo autorizado, con
+        limites de tiempo y alcance definidos. En el Laboratorio 3 esta operacion es simulada: no se
+        conecta por SSH/API a equipos reales, pero el flujo y la generacion de evidencia se comportan
+        igual que en modo real.
+      </p>
+      <table>
+        <tr><th>Campo</th><th>Tipo</th><th>Descripcion</th></tr>
+        <tr><td><code>deviceId</code> (requerido)</td><td>string</td><td>Dispositivo autorizado destino</td></tr>
+        <tr><td><code>scriptId</code> (requerido)</td><td>string</td><td>Script previamente validado</td></tr>
+        <tr><td><code>dryRun</code> (opcional)</td><td>boolean</td><td>Forzar simulacion (default: true)</td></tr>
+        <tr><td><code>timeoutSeconds</code> (opcional)</td><td>integer</td><td>Limite maximo de ejecucion</td></tr>
+      </table>
+      <pre>{
+  "executionId": "exe-8841",
+  "status": "simulated",
+  "deviceId": "fw-bog-01",
+  "scriptId": "show-running-config",
+  "dryRun": true,
+  "requestedBy": "operador.autorizado",
+  "startedAt": "2026-09-02T14:03:11Z"
+}</pre>
+    </section>
+
+    <section id="get-execution">
+      <h2><span class="method get">GET</span><code>/executions/{id}</code></h2>
+      <p>Consulta el estado, la salida capturada y el resultado de una ejecucion (pendiente, en curso, exitosa, fallida).</p>
+    </section>
+
+    <section id="rollback">
+      <h2><span class="method sim">SIM</span><code>/executions/{id}/rollback</code></h2>
+      <p>
+        Simula la reversion de los cambios asociados a una ejecucion previa, dejando registro del
+        motivo y del estado resultante. En el Laboratorio 3 no revierte cambios reales.
+      </p>
+    </section>
+
+    <section id="evidence">
+      <h2><span class="method get">GET</span><code>/executions/{id}/evidence</code></h2>
+      <p>
+        Devuelve la evidencia de auditoria de una ejecucion: quien la solicito, cuando, sobre que
+        dispositivo, la salida capturada y si hubo rollback.
+      </p>
+      <pre>{
+  "executionId": "exe-8841",
+  "deviceId": "fw-bog-01",
+  "requestedBy": "operador.autorizado",
+  "result": "success",
+  "rollbackAvailable": true,
+  "output": "...salida capturada..."
+}</pre>
+    </section>
+
+  </main>
+
+</div>
+
+<footer>NETWORK AUTOMATION HUB :: LABORATORIO 3 :: ARQUITECTURAS DE SOFTWARE</footer>
+
+</body>
+</html>
