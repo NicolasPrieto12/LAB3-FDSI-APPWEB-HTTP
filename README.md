@@ -13,15 +13,24 @@ Durante este laboratorio solo se permiten operaciones de lectura y simulaciones.
 
 ## En que vamos
 
-Por ahora solo tenemos lista la referencia de la API que vamos a implementar: [`network-automation-hub/index.html`](network-automation-hub/index.html). Es una pagina estatica (sin backend, sin nada que instalar) que documenta los endpoints planeados:
+El sitio ([`network-automation-hub/index.html`](network-automation-hub/index.html)) es una pagina estatica (sin backend) que documenta los endpoints planeados de la API:
 
 - Inventario de dispositivos
 - Scripts aprobados y su validacion
 - Ejecucion controlada (simulada), rollback y evidencia/auditoria
 
-Se abre directo en el navegador, no necesita servidor.
+Ya esta desplegado de verdad (Fase A completa) y paso por todo el ciclo del lab: reconocimiento Red Team, deteccion Blue Team, hardening y retest. Ver "Arquitectura final" y las carpetas `evidence/` abajo. Implementar los endpoints reales queda para el roadmap del proyecto, no es parte de este laboratorio.
 
-Lo que sigue es implementar esos endpoints de verdad.
+## Arquitectura final
+
+Las dos VMs corren en la misma maquina (la PC de Nicolas), en modo de red **Bridged** en VMware (asi ambas quedan visibles entre si en la red de casa; en la red de la universidad el modo NAT dio problemas de DHCP — si se retoma en otra red y falla, revisar que el modo de adaptador coincida en las dos VMs):
+
+| Rol | Maquina | IP |
+|---|---|---|
+| Red Team | Kali Linux | `192.168.0.38` |
+| Blue Team / host de la app | Ubuntu Server 26.04 + Nginx | `192.168.0.6` |
+
+El sitio se sirve desde `/var/www/network-automation-hub/` (virtual host en `/etc/nginx/sites-available/network-automation-hub`). Firewall (`ufw`) limitado a `192.168.0.0/24` en el puerto 80, SSH abierto.
 
 ## DFD (diagrama de flujo de datos)
 
@@ -33,36 +42,34 @@ Fuente editable en [`diagrams/dfd-lab3.drawio`](diagrams/dfd-lab3.drawio) (abrir
 
 ## Hipotesis STRIDE (Fase B)
 
-Adaptadas al spec de la API ya documentado en [`network-automation-hub/index.html`](network-automation-hub/index.html) (inventario de dispositivos, scripts aprobados, ejecucion controlada). La columna de validacion queda pendiente hasta tener la instancia Ubuntu + Nginx desplegada:
+Adaptadas al spec de la API ya documentado en [`network-automation-hub/index.html`](network-automation-hub/index.html) (inventario de dispositivos, scripts aprobados, ejecucion controlada):
 
 | ID | STRIDE | Hipotesis tecnica | Validacion |
 |----|--------|--------------------|------------|
-| H1 | Information Disclosure | `GET /devices` expone el inventario completo (sede, rol, estado) sin autenticacion real — el header `Authorization` del spec es solo documental, nadie lo valida. | Pendiente — `curl` sin token contra `$TARGET_URL` y revisar respuesta. |
-| H2 | Information Disclosure | `GET /executions/{id}/evidence` devuelve quien ejecuto que, sobre que dispositivo y la salida capturada; sin control de acceso por operador, alcanzaria con enumerar el `id`. | Pendiente — enumeracion de IDs con curl/ZAP en modo pasivo. |
-| H3 | Spoofing | Nada valida el `Authorization: Bearer <token>` ni el campo `requestedBy`; cualquiera podria suplantar a `operador.autorizado` al pedir una ejecucion (`SIM /executions`). | Pendiente — inspeccionar si el request se acepta sin token valido. |
-| H4 | Repudiation | Como no hay verificacion real de identidad, un operador podria negar haber pedido una ejecucion o un rollback: no hay prueba de origen, solo el dato que el propio cliente declaro. | Pendiente — comparar `access.log` contra las hipotesis de origen declarado. |
-| H5 | Tampering | Sin TLS (HTTP plano), un intermediario en la red podria alterar `deviceId`/`scriptId`/`dryRun` en transito en el `POST /executions`, sin que el operador se entere. | Pendiente — demostrar ausencia de proteccion sin interceptar terceros. |
+| H1 | Information Disclosure | `GET /devices` expone el inventario completo (sede, rol, estado) sin autenticacion real — el header `Authorization` del spec es solo documental, nadie lo valida. | **Confirmada** — `curl -i $TARGET_URL/` responde `200 OK` sin ningun token. Ver [evidence/red/curl_home.txt](evidence/red/curl_home.txt). |
+| H2 | Information Disclosure | `GET /executions/{id}/evidence` devuelve quien ejecuto que, sobre que dispositivo y la salida capturada; sin control de acceso por operador, alcanzaria con enumerar el `id`. | **Confirmada** (a nivel de servidor) — Nmap y ZAP revelan `nginx 1.28.3 (Ubuntu)` en headers/banner antes del hardening. Corregido despues (ver `risk-register.md`, R2). |
+| H3 | Spoofing | Nada valida el `Authorization: Bearer <token>` ni el campo `requestedBy`; cualquiera podria suplantar a `operador.autorizado` al pedir una ejecucion (`SIM /executions`). | Pendiente para Lab 4 — la API aun no esta implementada, solo documentada; se valida cuando exista backend real. |
+| H4 | Repudiation | Como no hay verificacion real de identidad, un operador podria negar haber pedido una ejecucion o un rollback: no hay prueba de origen, solo el dato que el propio cliente declaro. | **Mitigada parcialmente** — `access.log` correlacionado identifica IP y User-Agent del origen (ej. Nmap Scripting Engine), pero no identifica al operador humano. Ver [evidence/blue/access-log-nmap-detection.txt](evidence/blue/access-log-nmap-detection.txt). |
+| H5 | Tampering | Sin TLS (HTTP plano), un intermediario en la red podria alterar `deviceId`/`scriptId`/`dryRun` en transito en el `POST /executions`, sin que el operador se entere. | **Confirmada** — captura de Wireshark muestra el trafico completo en texto plano, sin cifrar. Pendiente para Lab 4 (HTTPS/TLS). |
 
 ## Variables del laboratorio
 
-Se acuerdan antes de empezar la ronda Red/Blue, una vez el docente asigne IP y CIDR:
+Valores usados en la ejecucion final (Kali → Ubuntu, red Bridged local):
 
 ```bash
-export TARGET_IP=IP_ASIGNADA
+export TARGET_IP=192.168.0.6
 export TARGET_URL=http://$TARGET_IP
-export LAB_CIDR=CIDR_AUTORIZADO
+export LAB_CIDR=192.168.0.0/24
 ```
 
 ## Linea de tiempo Purple Team (Paso 14)
 
-Se llena durante la ronda conjunta Red Team / Blue Team:
-
 | Hora UTC | Accion Red Team | Evidencia Blue Team | Conclusion |
 |----------|-------------------|----------------------|------------|
-| Completar | Nmap port 80 | Completar | Completar |
-| Completar | GET / | Completar | Completar |
-| Completar | GET archivo publico | Completar | Completar |
-| Completar | Ruta inexistente | Completar | Completar |
+| 22:06:54 | Nmap port 80 + NSE scripts | 4x 404 en `access.log`, mismo segundo | Escaneo automatizado detectado |
+| 22:07:06 | curl GET / | 200 en `access.log` | Correlacion confirmada |
+| 22:07:17 | curl HEAD /public-inventory.txt | 404 en `access.log` | Ruta inexistente identificada |
+| 23:08-23:17 | ZAP Manual Explore (Firefox) | GET /, favicon.ico 404 | Navegacion de exploracion pasiva |
 
 ## Captura de trafico HTTP (Wireshark)
 
