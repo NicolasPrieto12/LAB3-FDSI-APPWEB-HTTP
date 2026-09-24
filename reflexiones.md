@@ -12,4 +12,9 @@ Trabajar en equipo a distancia cada uno en su red también fue un reto. Coordina
 
 ## Nicolás
 
-_Pendiente — máximo 250 palabras._
+Antes de hacer este laboratorio sabía que HTTP es inseguro, pero con la hechura de este cambió lo que pensaba con del riesgo. Lo más revelador fue notar cuánta información se filtra sin que nadie "hackee" nada: el simple header Server: nginx/1.28.3 (Ubuntu) le dice a cualquiera qué versión exacta está corriendo, y eso ya es una pista para buscar vulnerabilidades. También me sorprendió ver en “access.log” que un escaneo de Nmap deja su propia firma, es decir cuatro peticiones a rutas absurdas (‘/HNAP1’, ‘/evox/about’) en el mismo segundo exacto, con un User-Agent que dice "Nmap Scripting Engine". Sin saber nada de seguridad, cualquiera que revise ese log se da cuenta de que algo no fue tráfico humano normal.
+
+Lo que más me impacto fue el hardening: con apenas seis líneas de configuración en Nginx (‘server_tokens off’, algunos headers, una regla de ‘deny’) corregimos dos de los cinco riesgos que había detectado ZAP, sin tocar nada de la lógica de la aplicación. Con lo antes dicho me dejó claro que buena parte de la seguridad básica es configuración, no código.
+
+La conexión con el Laboratorio 4, podemos asumir que cualquiera puede leer el tráfico y entrar sin identificarse. R1 (HTTP sin cifrar) y R3 (sin autenticación) quedaron explícitamente, porque son justo lo que viene, cifrar con TLS para que ni el contenido ni las credenciales viajen en claro, y agregar identidad para que el ‘access.log’ deje de mostrar solo una IP anónima y empiece a mostrar quién hizo qué.
+
