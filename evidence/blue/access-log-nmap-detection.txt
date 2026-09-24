@@ -1,0 +1,23 @@
+# Paso 12 - Revision de /var/log/nginx/access.log.1 (Blue Team, Ubuntu)
+
+192.168.0.38 - - [22/Sep/2026:22:06:54 -0500] "GET /nmaplowercheck1790132814 HTTP/1.1" 404 162 "-" "Mozilla/5.0 (compatible; Nmap Scripting Engine; https://nmap.org/book/nse.html)"
+192.168.0.38 - - [22/Sep/2026:22:06:54 -0500] "POST /sdk HTTP/1.1" 404 162 "-" "Mozilla/5.0 (compatible; Nmap Scripting Engine; https://nmap.org/book/nse.html)"
+192.168.0.38 - - [22/Sep/2026:22:06:54 -0500] "GET /evox/about HTTP/1.1" 404 162 "-" "Mozilla/5.0 (compatible; Nmap Scripting Engine; https://nmap.org/book/nse.html)"
+192.168.0.38 - - [22/Sep/2026:22:06:54 -0500] "GET /HNAP1 HTTP/1.1" 404 162 "-" "Mozilla/5.0 (compatible; Nmap Scripting Engine; https://nmap.org/book/nse.html)"
+192.168.0.38 - - [22/Sep/2026:22:07:06 -0500] "GET / HTTP/1.1" 200 13647 "-" "curl/8.20.0"
+192.168.0.38 - - [22/Sep/2026:22:07:17 -0500] "HEAD /public-inventory.txt HTTP/1.1" 404 0 "-" "curl/8.20.0"
+127.0.0.1 - - [22/Sep/2026:22:56:51 -0500] "HEAD / HTTP/1.1" 200 0 "-" "curl/8.18.0"
+
+# Paso 13 - Regla de deteccion
+$ sudo grep '" 404 ' /var/log/nginx/access.log.1 | awk '{print $1}' | sort | uniq -c | sort -nr
+      7 192.168.0.38
+      2 127.0.0.1
+
+Interpretacion: la IP de Kali (192.168.0.38, Red Team) genero 7 respuestas 404
+en el mismo segundo (22:06:54), con User-Agent "Nmap Scripting Engine" -- esa
+firma (multiples 404 en <1s desde la misma IP, mismo User-Agent) es la señal
+que identifica un escaneo automatizado.
+
+Limitacion documentada: la regla tambien puede generar falsos positivos con
+trafico legitimo repetitivo (ej. /favicon.ico pedido varias veces por un
+navegador normal), asi que no es 100% concluyente por si sola.

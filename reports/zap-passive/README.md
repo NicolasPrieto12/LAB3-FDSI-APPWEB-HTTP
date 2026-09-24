@@ -1,3 +1,17 @@
-# reports/zap-passive — pendiente
+# reports/zap-passive — OWASP ZAP, Manual Explore (completo)
 
-Aqui va el reporte HTML exportado de OWASP ZAP en modo pasivo (Manual Explore, sin Active Scan) contra `$TARGET_URL` una vez la instancia Ubuntu este desplegada.
+Escaneo pasivo contra `http://192.168.0.6` (sin Active Scan), 23/09/2026.
+
+**Resultado: 5 alertas pasivas, 0 High, 3 Medium, 2 Low**
+
+| Alerta | Riesgo |
+|---|---|
+| Content Security Policy (CSP) Header Not Set | Medium |
+| Missing Anti-clickjacking Header | Medium |
+| Sub Resource Integrity Attribute Missing | Medium |
+| Server Leaks Version Information via "Server" HTTP Response Header Field | Low (relacionado con R2) |
+| X-Content-Type-Options Header Missing | Low |
+
+Ver [zap-alerts-summary.png](zap-alerts-summary.png) y [zap-report-risk-table.png](zap-report-risk-table.png).
+
+> Nota: falta subir el `Report.html` exportado completo de ZAP (está en el escritorio de Kali, `~/Desktop/Report.html`, según las capturas) — pídanselo a Nicolás para tenerlo íntegro en el repo.

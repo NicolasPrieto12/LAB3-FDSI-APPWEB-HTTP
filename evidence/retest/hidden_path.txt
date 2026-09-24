@@ -1,0 +1,22 @@
+$ curl -i $TARGET_URL/.git/config
+HTTP/1.1 403 Forbidden
+Server: nginx
+Date: Wed, 23 Sep 2026 06:34:32 GMT
+Content-Type: text/html
+Content-Length: 146
+Connection: keep-alive
+X-Content-Type-Options: nosniff
+X-Frame-Options: DENY
+Referrer-Policy: no-referrer
+
+<html>
+<head><title>403 Forbidden</title></head>
+<body>
+<center><h1>403 Forbidden</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+
+Antes del hardening: esta misma ruta (con /.git/ copiada al docroot para
+simular el riesgo) respondia 200 OK exponiendo el contenido de .git/config.
+Despues de agregar "location ~ /\. { deny all; }": 403 Forbidden.

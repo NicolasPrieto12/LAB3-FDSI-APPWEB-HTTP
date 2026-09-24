@@ -1,0 +1,12 @@
+$ curl -i $TARGET_URL/
+HTTP/1.1 200 OK
+Server: nginx/1.28.3 (Ubuntu)
+Date: Wed, 23 Sep 2026 03:07:06 GMT
+Content-Type: text/html
+Content-Length: 13647
+Last-Modified: Wed, 16 Sep 2026 23:04:57 GMT
+Connection: keep-alive
+ETag: "6aab2099-354f"
+Accept-Ranges: bytes
+
+[cuerpo: HTML completo de network-automation-hub/index.html — respondio 200 sin pedir Authorization ni ningun token]

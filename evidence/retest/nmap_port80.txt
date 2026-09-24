@@ -1,0 +1,10 @@
+# Retest - Paso 17 (despues del hardening)
+Nmap scan report for 192.168.0.6
+Host is up (0.00081s latency).
+
+PORT   STATE SERVICE VERSION
+80/tcp open  http    nginx
+MAC Address: 00:0C:29:8E:B3:36 (VMware)
+
+Comparacion: antes decia "nginx 1.28.3 (Ubuntu)", ahora solo dice "nginx"
+(server_tokens off funciono).

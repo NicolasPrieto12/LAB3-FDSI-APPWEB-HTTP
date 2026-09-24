@@ -1,0 +1,10 @@
+$ curl -I $TARGET_URL/public-inventory.txt
+HTTP/1.1 404 Not Found
+Server: nginx/1.28.3 (Ubuntu)
+Date: Wed, 23 Sep 2026 03:07:17 GMT
+Content-Type: text/html
+Content-Length: 162
+Connection: keep-alive
+
+Nota: el sitio solo tiene index.html, nunca se creo public-inventory.txt,
+por eso esta ruta especifica del PDF da 404 en este despliegue.
