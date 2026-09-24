@@ -2,7 +2,7 @@
 
 | Prueba | Antes | Después | Evidencia |
 |---|---|---|---|
-| `nmap -sV -p 80` | `nginx 1.28.3 (Ubuntu)` — versión completa expuesta | `nginx` — sin versión ni distro | [nmap_port80.txt](nmap_port80.txt) vs. [../red/nmap_port80.txt](../red/nmap_port80.txt) |
+| `nmap -sV -p 80` | `nginx 1.28.3 (Ubuntu)` — versión completa expuesta | `nginx` — sin versión ni distro | [nmap_port80.nmap](nmap_port80.nmap) vs. [../red/nmap_port80.nmap](../red/nmap_port80.nmap) |
 | Header `Server` (curl) | `nginx/1.28.3 (Ubuntu)` | `nginx` | [headers_after.txt](headers_after.txt) |
 | Headers de seguridad | Ausentes (sin `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`) | Los 3 presentes | [headers_after.txt](headers_after.txt) |
 | `curl .git/config` | `200 OK` — contenido de `.git/config` expuesto (ruta copiada al docroot para simular el riesgo) | `403 Forbidden` | [hidden_path.txt](hidden_path.txt), [git-config-403-after-hardening.png](git-config-403-after-hardening.png) |

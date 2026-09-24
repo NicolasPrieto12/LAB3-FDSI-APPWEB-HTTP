@@ -1,0 +1,4 @@
+# Nmap 7.99 scan initiated Tue Sep 22 23:06:47 2026 as: /usr/lib/nmap/nmap --privileged -Pn -sV -p 80 -oA evidence/red/nmap_port80 192.168.0.6
+Host: 192.168.0.6 ()	Status: Up
+Host: 192.168.0.6 ()	Ports: 80/open/tcp//http//nginx 1.28.3 (Ubuntu)/
+# Nmap done at Tue Sep 22 23:06:54 2026 -- 1 IP address (1 host up) scanned in 6.91 seconds

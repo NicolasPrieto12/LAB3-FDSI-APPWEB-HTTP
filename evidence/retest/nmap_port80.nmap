@@ -1,0 +1,10 @@
+# Nmap 7.99 scan initiated Wed Sep 23 17:40:28 2026 as: /usr/lib/nmap/nmap --privileged -Pn -sV -p 80 -oA evidence/retest/nmap_port80 192.168.0.6
+Nmap scan report for 192.168.0.6
+Host is up (0.00081s latency).
+
+PORT   STATE SERVICE VERSION
+80/tcp open  http    nginx
+MAC Address: 00:0C:29:8E:B3:36 (VMware)
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Wed Sep 23 17:40:35 2026 -- 1 IP address (1 host up) scanned in 6.89 seconds
