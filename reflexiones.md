@@ -1,4 +1,4 @@
-# Reflexiones individuales — Laboratorio 3
+# Reflexiones individuales: Laboratorio 3
 
 ## Mabel
 

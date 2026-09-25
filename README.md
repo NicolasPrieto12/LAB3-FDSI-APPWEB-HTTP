@@ -7,7 +7,7 @@
 
 ## Resumen rapido
 
-Montamos el sitio en un Ubuntu Server real con Nginx y lo atacamos desde Kali por red (no localhost). Con Nmap, curl y ZAP encontramos que el servidor expone su version (`nginx 1.28.3 Ubuntu`), que el contenido se sirve sin ningun tipo de autenticacion, y que copiando `.git/` al docroot quedaba accesible `.git/config`. Con Wireshark confirmamos que todo viaja en HTTP plano, sin cifrar. Revisando `access.log` logramos detectar el escaneo de Nmap por su patron (varios 404 en el mismo segundo, User-Agent "Nmap Scripting Engine"). Aplicamos hardening en Nginx (headers de seguridad, ocultar version, bloquear rutas ocultas) y con eso corregimos 2 de los 5 riesgos detectados y mitigamos uno mas — los otros dos (HTTP sin cifrar y falta de autenticacion) quedan a proposito para el Laboratorio 4. Detalle completo en [`risk-register.md`](risk-register.md) y [`evidence/`](evidence/).
+Montamos el sitio en un Ubuntu Server real con Nginx y lo atacamos desde Kali por red (no localhost). Con Nmap, curl y ZAP encontramos que el servidor expone su version (`nginx 1.28.3 Ubuntu`), que el contenido se sirve sin ningun tipo de autenticacion, y que copiando `.git/` al docroot quedaba accesible `.git/config`. Con Wireshark confirmamos que todo viaja en HTTP plano, sin cifrar. Revisando `access.log` logramos detectar el escaneo de Nmap por su patron (varios 404 en el mismo segundo, User-Agent "Nmap Scripting Engine"). Aplicamos hardening en Nginx (headers de seguridad, ocultar version, bloquear rutas ocultas) y con eso corregimos 2 de los 5 riesgos detectados y mitigamos uno mas. Los otros dos (HTTP sin cifrar y falta de autenticacion) quedan a proposito para el Laboratorio 4. Detalle completo en [`risk-register.md`](risk-register.md) y [`evidence/`](evidence/).
 
 ## Que es esto
 
@@ -27,7 +27,7 @@ Ya esta desplegado de verdad (Fase A completa) y paso por todo el ciclo del lab:
 
 ## Arquitectura final
 
-Las dos VMs corren en la misma maquina (la PC de Nicolas), en modo de red **Bridged** en VMware (asi ambas quedan visibles entre si en la red de casa; en la red de la universidad el modo NAT dio problemas de DHCP — si se retoma en otra red y falla, revisar que el modo de adaptador coincida en las dos VMs):
+Las dos VMs corren en la misma maquina (la PC de Nicolas), en modo de red **Bridged** en VMware, asi ambas quedan visibles entre si en la red de casa. En la red de la universidad el modo NAT dio problemas de DHCP, asi que si se retoma en otra red y falla, revisar que el modo de adaptador coincida en las dos VMs:
 
 | Rol | Maquina | IP |
 |---|---|---|
@@ -50,15 +50,15 @@ Adaptadas al spec de la API ya documentado en [`network-automation-hub/index.htm
 
 | ID | STRIDE | Hipotesis tecnica | Validacion |
 |----|--------|--------------------|------------|
-| H1 | Information Disclosure | `GET /devices` expone el inventario completo (sede, rol, estado) sin autenticacion real — el header `Authorization` del spec es solo documental, nadie lo valida. | **Confirmada** — `curl -i $TARGET_URL/` responde `200 OK` sin ningun token. Ver [evidence/red/curl_home.txt](evidence/red/curl_home.txt). |
-| H2 | Information Disclosure | `GET /executions/{id}/evidence` devuelve quien ejecuto que, sobre que dispositivo y la salida capturada; sin control de acceso por operador, alcanzaria con enumerar el `id`. | **Confirmada** (a nivel de servidor) — Nmap y ZAP revelan `nginx 1.28.3 (Ubuntu)` en headers/banner antes del hardening. Corregido despues (ver `risk-register.md`, R2). |
-| H3 | Spoofing | Nada valida el `Authorization: Bearer <token>` ni el campo `requestedBy`; cualquiera podria suplantar a `operador.autorizado` al pedir una ejecucion (`SIM /executions`). | Pendiente para Lab 4 — la API aun no esta implementada, solo documentada; se valida cuando exista backend real. |
-| H4 | Repudiation | Como no hay verificacion real de identidad, un operador podria negar haber pedido una ejecucion o un rollback: no hay prueba de origen, solo el dato que el propio cliente declaro. | **Mitigada parcialmente** — `access.log` correlacionado identifica IP y User-Agent del origen (ej. Nmap Scripting Engine), pero no identifica al operador humano. Ver [evidence/blue/access-log-nmap-detection.txt](evidence/blue/access-log-nmap-detection.txt). |
-| H5 | Tampering | Sin TLS (HTTP plano), un intermediario en la red podria alterar `deviceId`/`scriptId`/`dryRun` en transito en el `POST /executions`, sin que el operador se entere. | **Confirmada** — captura de Wireshark muestra el trafico completo en texto plano, sin cifrar. Pendiente para Lab 4 (HTTPS/TLS). |
+| H1 | Information Disclosure | `GET /devices` expone el inventario completo (sede, rol, estado) sin autenticacion real, porque el header `Authorization` del spec es solo documental y nadie lo valida. | **Confirmada**: `curl -i $TARGET_URL/` responde `200 OK` sin ningun token. Ver [evidence/red/curl_home.txt](evidence/red/curl_home.txt). |
+| H2 | Information Disclosure | `GET /executions/{id}/evidence` devuelve quien ejecuto que, sobre que dispositivo y la salida capturada; sin control de acceso por operador, alcanzaria con enumerar el `id`. | **Confirmada** a nivel de servidor: Nmap y ZAP revelan `nginx 1.28.3 (Ubuntu)` en headers/banner antes del hardening. Corregido despues (ver `risk-register.md`, R2). |
+| H3 | Spoofing | Nada valida el `Authorization: Bearer <token>` ni el campo `requestedBy`; cualquiera podria suplantar a `operador.autorizado` al pedir una ejecucion (`SIM /executions`). | Pendiente para Lab 4, porque la API aun no esta implementada, solo documentada. Se valida cuando exista backend real. |
+| H4 | Repudiation | Como no hay verificacion real de identidad, un operador podria negar haber pedido una ejecucion o un rollback: no hay prueba de origen, solo el dato que el propio cliente declaro. | **Mitigada parcialmente**: `access.log` correlacionado identifica IP y User-Agent del origen (ej. Nmap Scripting Engine), pero no identifica al operador humano. Ver [evidence/blue/access-log-nmap-detection.txt](evidence/blue/access-log-nmap-detection.txt). |
+| H5 | Tampering | Sin TLS (HTTP plano), un intermediario en la red podria alterar `deviceId`/`scriptId`/`dryRun` en transito en el `POST /executions`, sin que el operador se entere. | **Confirmada**: captura de Wireshark muestra el trafico completo en texto plano, sin cifrar. Pendiente para Lab 4 (HTTPS/TLS). |
 
 ## Variables del laboratorio
 
-Valores usados en la ejecucion final (Kali → Ubuntu, red Bridged local):
+Valores usados en la ejecucion final (Kali contra Ubuntu, red Bridged local):
 
 ```bash
 export TARGET_IP=192.168.0.6
