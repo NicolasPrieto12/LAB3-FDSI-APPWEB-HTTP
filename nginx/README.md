@@ -1,7 +1,7 @@
 # nginx/
 
-- `site.conf` — virtual host del Paso 4, para copiar tal cual a `/etc/nginx/sites-available/muvautomation` en el Ubuntu Server.
-- `hardening.conf` — headers de seguridad del Paso 15, se agrega DESPUES del primer retest (no antes, porque el lab pide medir el "antes" sin hardening).
+- `site.conf`: virtual host del Paso 4, para copiar tal cual a `/etc/nginx/sites-available/muvautomation` en el Ubuntu Server.
+- `hardening.conf`: headers de seguridad del Paso 15, se agrega DESPUES del primer retest (no antes, porque el lab pide medir el "antes" sin hardening).
 
 Firewall (Paso 5), correr en el Ubuntu una vez Nginx este arriba:
 

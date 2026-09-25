@@ -5,3 +5,5 @@ Content-Type: text/html
 Content-Length: 162
 Connection: keep-alive
 
+Nota: el sitio solo tiene index.html, nunca se creo public-inventory.txt,
+por eso esta ruta especifica del PDF da 404 en este despliegue.

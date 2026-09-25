@@ -1,8 +1,10 @@
-# evidence/red — pendiente
+# evidence/red: Reconocimiento Red Team (completo)
 
-Falta correr esto contra la instancia Ubuntu ya desplegada (Fase C del lab):
+Ejecutado desde Kali (192.168.0.38) contra Ubuntu + Nginx (192.168.0.6), 22-23/09/2026.
 
-- [ ] `nmap -Pn -sV -p 80 "$TARGET_IP" -oA evidence/red/nmap_port80`
-- [ ] `curl -i "$TARGET_URL/" | tee evidence/red/curl_home.txt`
-- [ ] `curl -I "$TARGET_URL/public-inventory.txt" | tee evidence/red/curl_headers.txt`
-- [ ] Reporte HTML exportado de OWASP ZAP (Manual Explore, sin Active Scan) en `reports/zap-passive/`
+- [nmap_port80.nmap](nmap_port80.nmap) (con `.gnmap` y `.xml`): puerto 80 abierto, `nginx 1.28.3 (Ubuntu)` expuesto (evidencia R2)
+- [curl_home.txt](curl_home.txt): `200 OK` sin autenticación (evidencia R3)
+- [curl_headers.txt](curl_headers.txt): `404` en `/public-inventory.txt`, porque el sitio solo tiene `index.html`
+- [kali-nmap-curl.png](kali-nmap-curl.png): captura de terminal con la secuencia completa
+- [evidence-folder-listing.png](evidence-folder-listing.png): listado de archivos generados en Kali
+- Reporte pasivo de OWASP ZAP: ver [`../../reports/zap-passive/`](../../reports/zap-passive/)

@@ -15,3 +15,7 @@ Referrer-Pilicy: no-referrer
 <hr><center>nginx</center>
 </body>
 </html>
+
+Antes del hardening: esta misma ruta (con /.git/ copiada al docroot para
+simular el riesgo) respondia 200 OK exponiendo el contenido de .git/config.
+Despues de agregar "location ~ /\. { deny all; }": 403 Forbidden.
