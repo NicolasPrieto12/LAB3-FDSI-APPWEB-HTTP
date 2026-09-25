@@ -5,6 +5,10 @@
 <h1 align="center">Network Automation Hub</h1>
 <p align="center">Laboratorio 3 — Aplicaciones Web / HTTP</p>
 
+## Resumen rapido
+
+Montamos el sitio en un Ubuntu Server real con Nginx y lo atacamos desde Kali por red (no localhost). Con Nmap, curl y ZAP encontramos que el servidor expone su version (`nginx 1.28.3 Ubuntu`), que el contenido se sirve sin ningun tipo de autenticacion, y que copiando `.git/` al docroot quedaba accesible `.git/config`. Con Wireshark confirmamos que todo viaja en HTTP plano, sin cifrar. Revisando `access.log` logramos detectar el escaneo de Nmap por su patron (varios 404 en el mismo segundo, User-Agent "Nmap Scripting Engine"). Aplicamos hardening en Nginx (headers de seguridad, ocultar version, bloquear rutas ocultas) y con eso corregimos 2 de los 5 riesgos detectados y mitigamos uno mas — los otros dos (HTTP sin cifrar y falta de autenticacion) quedan a proposito para el Laboratorio 4. Detalle completo en [`risk-register.md`](risk-register.md) y [`evidence/`](evidence/).
+
 ## Que es esto
 
 Vamos a construir un prototipo para consultar un inventario ficticio de dispositivos de red (firewalls, routers, switches) y preparar la ejecucion controlada de scripts previamente aprobados sobre ellos. La idea es que quede evidencia clara de quien ejecuto que accion y con que resultado, en vez de que cada quien le meta mano a los equipos por su cuenta.
