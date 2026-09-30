@@ -6,11 +6,11 @@ Aquí está la evidencia de lo que llevamos de la Guía 2 (Reverse Engineering C
 
 | Parte | Estado |
 |---|---|
-| 0. Preparación | Hecha (falta marcar la casilla del repo, que es esta carpeta) |
+| 0. Preparación | Hecha |
 | 1. Baseline forense | Hecha |
 | 2. Nivel 1 (strings) | Hecha, FLAG obtenida. Detalle en [level1.md](level1.md) |
-| 3. Nivel 2 (Ghidra) | Pendiente |
-| 4. GDB | Pendiente |
+| 3. Nivel 2 (Ghidra) | Hecha, clave y FLAG obtenidas. Detalle en [level2.md](level2.md) |
+| 4. GDB | Hecha, clave mala devuelve 0 y la buena devuelve 1. Detalle en [gdb.md](gdb.md) |
 | 5. Boss (stripped) | Pendiente |
 
 ## 0. Preparación
@@ -46,3 +46,12 @@ Los hashes SHA-256 coinciden con los del README del profe:
 | crackme_level2_stripped | `c8e638741272a87ee3b30fe8878898c1aa977e6a879a1ec0b271034b5bb9aed3` |
 
 Sacamos el hash porque si el archivo cambia aunque sea un byte, el hash es otro. Así nos aseguramos de estar analizando el mismo binario que todos.
+
+## Resumen de resultados
+
+| Nivel | Clave | FLAG |
+|---|---|---|
+| 1 | `REDTEAM-101` | `FLAG{strings_are_evidence}` |
+| 2 | `FDSI-REVERSE-2026` | `FLAG{ghidra_plus_gdb}` |
+
+Lo que sigue es el Boss (el binario sin símbolos) y armar el `reverse-analysis.md`.
